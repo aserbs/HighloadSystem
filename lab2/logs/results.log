@@ -1,0 +1,94 @@
+setted 0
+Starting: Lost-update
+setted 0
+Starting: Lost-update
+setted 0
+Starting: Lost-update
+setted 0
+Starting: Lost-update
+setted 0
+Starting: Lost-update
+setted 0
+Starting: Lost-update
+20:31:50 23/12/2024 -- counter: 3308
+20:31:55 23/12/2024 -- counter: 6979
+20:32:00 23/12/2024 -- counter: 10592
+
+Result for Lost-update
+Counter value: 11568
+Time: 16.13s
+————————————————————————————————————————————————
+
+setted 0
+Starting: In-place update
+20:32:06 23/12/2024 -- counter: 31088
+20:32:11 23/12/2024 -- counter: 64927
+20:32:16 23/12/2024 -- counter: 98401
+
+Result for In-place update
+Counter value: 100000
+Time: 15.28s
+————————————————————————————————————————————————
+
+setted 0
+Starting: Row-level locking
+20:32:21 23/12/2024 -- counter: 2655
+setted 0
+Starting: Lost-update
+20:32:41 23/12/2024 -- counter: 3307
+20:32:46 23/12/2024 -- counter: 6742
+20:32:51 23/12/2024 -- counter: 10384
+
+Result for Lost-update
+Counter value: 12767
+Time: 17.93s
+————————————————————————————————————————————————
+
+setted 0
+Starting: In-place update
+20:32:59 23/12/2024 -- counter: 27797
+20:33:04 23/12/2024 -- counter: 59465
+20:33:09 23/12/2024 -- counter: 92727
+
+Result for In-place update
+Counter value: 100000
+Time: 16.17s
+————————————————————————————————————————————————
+
+setted 0
+Starting: Row-level locking
+20:33:15 23/12/2024 -- counter: 2605
+20:33:20 23/12/2024 -- counter: 5327
+20:33:25 23/12/2024 -- counter: 8209
+20:33:30 23/12/2024 -- counter: 11050
+20:33:35 23/12/2024 -- counter: 13888
+
+Result for Row-level locking
+Counter value: 16345
+Time: 29.26s
+————————————————————————————————————————————————
+
+setted 0
+Starting: Optimistic concurrency control
+20:33:44 23/12/2024 -- counter: 4710
+20:33:49 23/12/2024 -- counter: 10765
+20:33:54 23/12/2024 -- counter: 16683
+20:33:59 23/12/2024 -- counter: 22517
+20:34:04 23/12/2024 -- counter: 28239
+20:34:09 23/12/2024 -- counter: 34549
+20:34:14 23/12/2024 -- counter: 40791
+20:34:19 23/12/2024 -- counter: 46955
+20:34:24 23/12/2024 -- counter: 52970
+20:34:29 23/12/2024 -- counter: 59105
+20:34:34 23/12/2024 -- counter: 64670
+20:34:39 23/12/2024 -- counter: 70694
+20:34:44 23/12/2024 -- counter: 76587
+20:34:49 23/12/2024 -- counter: 82667
+20:34:54 23/12/2024 -- counter: 88317
+20:34:59 23/12/2024 -- counter: 94986
+
+Result for Optimistic concurrency control
+Counter value: 100000
+Time: 83.60s
+————————————————————————————————————————————————
+
