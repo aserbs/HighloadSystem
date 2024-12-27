@@ -1,22 +1,20 @@
-import time
-import threading
-from neo4j import GraphDatabase
 import os
 from dotenv import load_dotenv
+from neo4j import GraphDatabase
+import threading
+import time
+
+
 load_dotenv()
 NEO4J_USERNAME = os.environ.get("NEO4J_USERNAME")
 NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD")
 NEO4J_URI = os.environ.get("NEO4J_URI")
 
 
-URI = "neo4j+ssc://55313cb3.databases.neo4j.io"
-AUTH = (NEO4J_USERNAME, NEO4J_PASSWORD)
-
-
 def increment_likes(tx):
     query = """
-    MATCH (i:Item {id: 2})
-    SET i.likes = i.likes + 10000
+    MATCH (i:Item {id: 1})
+    SET i.likes = coalesce(i.likes, 0) + 10000
     RETURN i.likes
     """
     result = tx.run(query)
@@ -30,9 +28,10 @@ def execute_increment():
 
 def get_likes():
     with driver.session() as session:
-        final_likes = session.run(
-            "MATCH (i:Item {id: 1}) RETURN i.likes").single()[0]
-        print(f"Total likes: {final_likes}")
+        result = session.run("MATCH (i:Item {id: 1}) RETURN i.likes").single()
+        total_likes = result[0] if result else 0
+        print(f"Total likes: {total_likes}")
+        return total_likes
 
 
 def start_threads():
@@ -47,9 +46,13 @@ def start_threads():
 
 
 if __name__ == "__main__":
-
-    driver = GraphDatabase.driver(NEO4J_URI, auth=AUTH)
+    driver = GraphDatabase.driver(
+        NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
     driver.verify_connectivity()
+
+    with driver.session() as session:
+        session.run(
+            "MERGE (i:Item {id: 1}) SET i.likes = coalesce(i.likes, 0)")
 
     get_likes()
 
@@ -60,4 +63,5 @@ if __name__ == "__main__":
     get_likes()
 
     driver.close()
-    print(f"time: {end_time - start_time} seconds")
+
+    print(f"Time: {end_time - start_time} seconds")
