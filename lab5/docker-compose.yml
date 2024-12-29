@@ -1,0 +1,90 @@
+version: "3.8"
+
+networks:
+  cassandra-net:
+    driver: bridge
+
+services:
+
+  cassandra-1:
+    image: "cassandra:latest"
+    container_name: "cassandra-1"
+    ports:
+      - "7010:7000"  # Internal communication
+      - "9042:9042"  # CQLSH communication
+    networks:
+      - cassandra-net
+    environment:
+      - CASSANDRA_CLUSTER_NAME=my-cluster
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_LISTEN_ADDRESS=auto
+      - CASSANDRA_BROADCAST_ADDRESS=auto
+    volumes:
+      - cassandra-node-1:/var/lib/cassandra
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool status"]
+      interval: 2m
+      start_period: 2m
+      timeout: 10s
+      retries: 3
+
+  cassandra-2:
+    image: "cassandra:latest"
+    container_name: "cassandra-2"
+    ports:
+      - "9043:9042"
+    networks:
+      - cassandra-net
+    environment:
+      - CASSANDRA_CLUSTER_NAME=my-cluster
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_LISTEN_ADDRESS=auto
+      - CASSANDRA_BROADCAST_ADDRESS=auto
+      - CASSANDRA_SEEDS=cassandra-1
+    depends_on:
+      cassandra-1:
+        condition: service_healthy
+    volumes:
+      - cassandra-node-2:/var/lib/cassandra
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool status"]
+      interval: 2m
+      start_period: 2m
+      timeout: 10s
+      retries: 3
+
+  cassandra-3:
+    image: "cassandra:latest"
+    container_name: "cassandra-3"
+    ports:
+      - "9044:9042"
+    networks:
+      - cassandra-net
+    environment:
+      - CASSANDRA_CLUSTER_NAME=my-cluster
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_LISTEN_ADDRESS=auto
+      - CASSANDRA_BROADCAST_ADDRESS=auto
+      - CASSANDRA_SEEDS=cassandra-1
+    depends_on:
+      cassandra-2:
+        condition: service_healthy
+    volumes:
+      - cassandra-node-3:/var/lib/cassandra
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool status"]
+      interval: 2m
+      start_period: 2m
+      timeout: 10s
+      retries: 3
+
+volumes:
+  cassandra-node-1:
+  cassandra-node-2:
+  cassandra-node-3:
